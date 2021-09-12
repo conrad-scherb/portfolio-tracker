@@ -3,7 +3,9 @@ import AssetDisplayTable from '../components/portfolio/AssetDisplayTable'
 
 const Home: NextPage = () => {
   return (
-    <AssetDisplayTable/>
+    <AssetDisplayTable
+      user={"acir"}
+    />
   )
 }
 

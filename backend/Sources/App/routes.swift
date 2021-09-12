@@ -33,8 +33,18 @@ func routes(_ app: Application) throws {
         return "Server is running"
     }
     
+    // MARK: User managment routes
     app.get("users") { req in
-        User.query(on: req.db).all()
+        return User.query(on: req.db).all()
+    }
+    
+    // Request the user's stocks
+    app.get("users", ":authID", "stocks") { req -> EventLoopFuture<User> in
+        let id = req.parameters.get("authID")!
+        return User.query(on: req.db)
+            .filter(\.$authUID == id)
+            .first()
+            .unwrap(or: Abort(.notFound))
     }
     
     app.post("users") { req -> EventLoopFuture<User> in
@@ -42,7 +52,9 @@ func routes(_ app: Application) throws {
         return user.create(on: req.db)
             .map { user }
     }
-
+    
+    
+    // MARK: Stock routes
     app.get("stock", "quote", ":symbol") { req -> EventLoopFuture<StockResponse> in
         let symbol = req.parameters.get("symbol")!
         let client = req.client

@@ -28,7 +28,7 @@ function DisplayRow(props: DisplayRowProps) {
             setName(data.companyName)
             setPercentChange(data.changePercent)
         })
-    });
+    }), [props.symbol];
 
     return (
         <tr className="h-20">
