@@ -10,16 +10,22 @@ interface DisplayTableProps {
 interface UserResponse {
     id: string
     authUID: string
-    stocks: [string]
+    stocks: [StockJSON]
+}
+
+export interface StockJSON {
+    numberHeld: number
+    symbol: string
+    costBasis: number
 }
 
 function AssetDisplayTable(props: DisplayTableProps) {
-    const [assets, setAssets] = useState<string[]>([]);
+    const [assets, setAssets] = useState<StockJSON[]>([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8080/users/${props.user}/stocks`).then((response) => {
             const data = response.data as UserResponse
-            console.log("Getting assets")
+            console.log(data.stocks)
             setAssets(data.stocks)
         })
     },  [props.user]);
@@ -30,7 +36,7 @@ function AssetDisplayTable(props: DisplayTableProps) {
 
             <tbody>
                 {assets.map((asset, idx) => {
-                    return <DisplayRow symbol={asset} key={idx}/>
+                    return <DisplayRow asset={asset} key={idx}/>
                 })}
             </tbody>
         </table>
