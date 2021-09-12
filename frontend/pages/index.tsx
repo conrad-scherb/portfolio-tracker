@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
-import AssetDisplayTable from '../components/AssetDisplayTable'
-import DisplayRow from '../components/DisplayRow'
+import AssetDisplayTable from '../components/portfolio/AssetDisplayTable'
 
 const Home: NextPage = () => {
   return (
