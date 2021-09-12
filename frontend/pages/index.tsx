@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
+import AssetDisplayTable from '../components/AssetDisplayTable'
 import DisplayRow from '../components/DisplayRow'
 
 const Home: NextPage = () => {
   return (
-    <div className="border-blue-500 border-2">
-      <DisplayRow symbol="cbt"/>
-    </div>
+    <AssetDisplayTable/>
   )
 }
 

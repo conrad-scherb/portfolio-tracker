@@ -16,13 +16,16 @@ function DisplayRow(props: DisplayRowProps) {
 
     return (
         <tr>
-            <td>
-                <img src={`https://storage.googleapis.com/iex/api/logos/${props.symbol.toUpperCase()}.png`}/>
+            <td className="text-center">
+                <img 
+                    className="transform w-20 h-20 scale-75"
+                    src={`https://storage.googleapis.com/iex/api/logos/${props.symbol.toUpperCase()}.png`}
+                />
             </td>
-            <td>
+            <td className="text-center">
                 {props.symbol.toUpperCase()}
             </td>
-            <td>
+            <td className="text-center">
                 {price}
             </td>
         </tr>
