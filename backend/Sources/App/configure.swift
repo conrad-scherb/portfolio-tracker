@@ -8,5 +8,5 @@ public func configure(_ app: Application) throws {
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
         
     try routes(app)
-    try app.databases.use(.mongo(connectionString: "mongodb://localhost:27017/portfolio-tracker"), as: .mongo)
+    try app.databases.use(.mongo(connectionString: "mongodb://localhost:27017/portfolio"), as: .mongo)
 }

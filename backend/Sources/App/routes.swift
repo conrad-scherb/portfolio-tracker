@@ -1,33 +1,6 @@
 import Vapor
 import Fluent
 
-struct StockResponse: Content {
-    var latestPrice: Double
-    var changePercent: Double
-    var companyName: String
-}
-
-final class User: Model, Content {
-    static let schema = "users"
-    
-    @ID(key: .id)
-    var id: UUID?
-    
-    @Field(key: "authUID")
-    var authUID: String
-    
-    @Field(key: "stocks")
-    var stocks: [String]
-    
-    init() { }
-    
-    init(id: UUID? = nil, authUID: String, stocks: [String]) {
-        self.id = id
-        self.authUID = authUID
-        self.stocks = stocks
-    }
-}
-
 func routes(_ app: Application) throws {
     app.get { req in
         return "Server is running"
@@ -35,7 +8,7 @@ func routes(_ app: Application) throws {
     
     // MARK: User managment routes
     app.get("users") { req in
-        return User.query(on: req.db).all()
+        return User.query(on: req.db).with(\.$stocks).all()
     }
     
     // Request the user's stocks
@@ -43,6 +16,7 @@ func routes(_ app: Application) throws {
         let id = req.parameters.get("authID")!
         return User.query(on: req.db)
             .filter(\.$authUID == id)
+            .with(\.$stocks)
             .first()
             .unwrap(or: Abort(.notFound))
     }
@@ -53,6 +27,11 @@ func routes(_ app: Application) throws {
             .map { user }
     }
     
+    app.post("users", "stocks") { req -> EventLoopFuture<Stock> in
+        let stock = try req.content.decode(Stock.self)
+        return stock.create(on: req.db)
+            .map { stock }
+    }
     
     // MARK: Stock routes
     app.get("stock", "quote", ":symbol") { req -> EventLoopFuture<StockResponse> in
