@@ -36,6 +36,12 @@ func routes(_ app: Application) throws {
     app.get("users") { req in
         User.query(on: req.db).all()
     }
+    
+    app.post("users") { req -> EventLoopFuture<User> in
+        let user = try req.content.decode(User.self)
+        return user.create(on: req.db)
+            .map { user }
+    }
 
     app.get("stock", "quote", ":symbol") { req -> EventLoopFuture<StockResponse> in
         let symbol = req.parameters.get("symbol")!
