@@ -3,15 +3,17 @@ import AssetTableHead from './AssetTableHead';
 import DisplayRow from './DisplayRow'
 
 function AssetDisplayTable() {
-    const [assets, setAssets] = useState(["aapl"]);
+    const [assets, setAssets] = useState(["aapl", "tqqq", "team"]);
 
     return (
         <table className="table-auto">
             <AssetTableHead/>
-            
-            {assets.map((asset) => {
-                return <DisplayRow symbol={asset}/>
-            })}
+
+            <tbody>
+                {assets.map((asset, idx) => {
+                    return <DisplayRow symbol={asset} key={idx}/>
+                })}
+            </tbody>
         </table>
 
     )
